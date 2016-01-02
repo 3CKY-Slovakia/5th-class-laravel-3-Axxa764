@@ -1,4 +1,5 @@
 <!-- Contact Section -->
+
 <section id="contact" class="relative contact">
 
     <div class="grayscale-bg absolute background41 parallax9 xdark-bg"></div>
@@ -148,7 +149,8 @@
             <!-- Contact Form -->
             <div class="contact_form f-right">
                 <!-- Form -->
-                <form id="contact_form" name="cform" class="clearfix form dark_form" method="post" action="php/mail.php">
+                <form class="clearfix form dark_form" method="post" action="{{ url('contact') }}">
+                    <input type="hidden" name="_token" value="{!! csrf_token() !!}">
 
                     <!-- Name -->
                     <input type="text" name="name" id="name" required placeholder="Name">

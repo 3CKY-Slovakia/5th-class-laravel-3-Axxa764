@@ -11,7 +11,7 @@
             <div class="cbp-filter-counter"></div>
         </div>
         <!-- Filter -->
-        <div data-filter=".graphic" class="cbp-filter-item">
+        <div data-filter=".Graphic" class="cbp-filter-item">
             Graphic
             <!-- Filter Counter -->
             <div class="cbp-filter-counter"></div>
@@ -40,7 +40,8 @@
 
 
     <!-- Portfolio Items -->
-    <div id="blog-items" class="fullwidth">
+    <div id="blog-items" class="fullwidth" >
+
         @foreach($articles as $article)
             <!-- Item -->
             <div class="cbp-item item design photography">
@@ -63,11 +64,11 @@
                 <!-- End Item Image -->
 
                 <!-- Details -->
-                <div class="details">
+                <div class="details" >
                     <!-- Item Name -->
                     <a href="{{ url('article/show/'.$article->id) }}" class="ex-link">
                         <h2 class="head">
-                            {{ $article->title }}
+                            {{ str_limit($article->title, 50) }}
                         </h2>
                     </a>
                     <!-- Description -->
@@ -76,18 +77,23 @@
                     </p>
                     <!-- Description -->
                     <p class="description">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                        {!!($article->description !=  '' ? str_limit($article->description, 150) : str_limit($article->content, 150) ) !!}
                     </p>
                 </div>
                 <!-- End Center Details Div -->
 
                 <!-- Posted By -->
-                <a href="#" class="posted_button">
+                <a href="{{ url('article/show/'.$article->id) }}" class="posted_button">
                     <!-- Image SRC -->
                     <img src="../images/user_01.jpg" alt="user">
                     <p>
-                        {{ $article->user->name }}
-                        <span>@WebDesign</span>
+                        {{ $article->user->name }} |
+
+                    </p>
+                    <p>
+                        @foreach($article->tags as $tag)
+                            {{$tag->name}}
+                        @endforeach
                     </p>
                 </a>
             </div>

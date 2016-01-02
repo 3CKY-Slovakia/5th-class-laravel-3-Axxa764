@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Tag;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ArticlesController extends Controller
 {
@@ -18,21 +20,23 @@ class ArticlesController extends Controller
     public function __construct()
     {
         $this->middleware('auth', ['except' => ['index', 'show']]);
-        $this->middleware('articleOwner:', ['except' => ['index', 'show', 'create']]);
+        $this->middleware('articleOwner:', ['except' => ['index', 'show', 'create', 'store', 'edit', 'delete', 'update']]);
+        $this->middleware('numberOfArticles:', ['except' => ['index', 'show', 'edit', 'delete', 'update']]);
     }
 
     /**
      * Display a listing of the resource.
      *
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $articles = Article::all();
-
+        $articles = Article::latest('created_at')->get();
         return view('articles.index', [
             'articles' => $articles
         ]);
+
     }
 
     /**
@@ -42,13 +46,16 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        return view('articles.create');
+        $tags = Tag::all();
+        return view('articles.create', [
+            'tags' => $tags
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -61,10 +68,22 @@ class ArticlesController extends Controller
         $article->content = $data['content'];
         $article->description = $data['description'];
         $article->user()->associate(Auth::user());
+        $tags = $data['tags'];
 
-        if($article->save()){
+
+        if ($article->save()) {
+            $article->tags()->attach($tags);
+
+            $articleId = $article->id;
+            $contactEmail = $article->user->email;
+            $data = array('id' => $articleId, 'email' => $contactEmail);
+
+            Mail::send('emails.article-creation', $data, function ($message) use ($data) {
+                $message->subject('Article:')
+                    ->to($data['email']);
+            });
             return redirect('/')->with('message', 'Your article was successfully created.');
-        }else{
+        } else {
             return redirect()->back()->with('message', 'Your article was not created. Please, try it again.');
         }
     }
@@ -72,7 +91,7 @@ class ArticlesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -80,30 +99,43 @@ class ArticlesController extends Controller
         $article = Article::find($id);
 
         return view('articles.show', [
-            'article' => $article
+            'article' => $article,
+            'comments' => $article->comments()
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         $article = Article::find($id);
+        $tags = Tag::all();
+        $checkedTags = $article->tags;
 
         return view('articles.edit', [
-            'article' => $article
+            'article' => $article,
+            'tags' => $tags,
+            'checkedTags' => $checkedTags
         ]);
+    }
+
+    public function delete($id)
+    {
+        $article = Article::findOrFail($id);
+        $article->delete();
+
+        return redirect('article');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -116,8 +148,18 @@ class ArticlesController extends Controller
         $article->content = $data['content'];
         $article->description = $data['description'];
         $article->user()->associate(Auth::user());
+        $tags = $data['tags'];
+        $oldTags = $article->tags;
+
+        foreach ($oldTags as $oldTag){
+            $oldId[]=$oldTag->id;
+        }
 
         if($article->save()){
+            if(!empty($oldId)){
+                $article->tags()->detach($oldId);
+            }
+            $article->tags()->attach($tags);
             return redirect('/')->with('message', 'Your article was successfully created.');
         }else{
             return redirect()->back()->with('message', 'Your article was not created. Please, try it again.');

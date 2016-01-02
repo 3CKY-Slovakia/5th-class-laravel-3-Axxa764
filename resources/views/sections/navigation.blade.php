@@ -10,7 +10,7 @@
                 <!-- Logo Link -->
                 <a href="#" class="logo-link scroll">
                     <!-- Logo Image / data-second-logo for only white nav -->
-                    <img src="{{ asset('/images/logo/logo_dark_red.png') }}" data-second-logo="../images/logo/logo_dark_red.png" alt="crexis_logo" />
+                    <img src="{{ asset('/images/logo/logo_dark_red.png') }}" data-second-logo='../../images/logo/logo_dark_red.png' alt="crexis_logo" />
                 </a>
             </div>
             <!-- End Logo Area -->
@@ -29,7 +29,7 @@
                     </li>
 
                     <li>
-                        <a href="#">Bloggers</a>
+                        <a href="{{ url('users') }}">Bloggers</a>
                     </li>
 
                     <li>
@@ -43,7 +43,6 @@
                                 <li class="ml-20 mt-15 mr-20 mb-15 raleway mini-text gray">
                                     <form action="{{ url('auth/login') }}" method="post" class="search-form">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-
                                         <input type="text" name="email" class="transparent uppercase" placeholder="Email">
                                         <input type="password" name="password" class="transparent uppercase" placeholder="Password">
                                         <input type="submit" value="Log In" class="btn-default" />

@@ -24,7 +24,7 @@ class Article extends Model
     protected $fillable = [
         'title',
         'video',
-        'content'
+        'content',
     ];
 
     protected $dates = ['deleted_at'];
@@ -37,5 +37,15 @@ class Article extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Tag');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
     }
 }

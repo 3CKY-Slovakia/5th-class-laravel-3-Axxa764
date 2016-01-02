@@ -34,6 +34,15 @@
                             <textarea class="summernote" name="content">{{ $article->content }}</textarea>
 
                             <div class="form-group">
+                                <label class="col-md-4 control-label">Tags</label>
+                                <div class="col-md-6">
+                                    @foreach($tags as $tag)
+                                        <input {{ $checkedTags->contains($tag)? "checked='checked'" :""}} name="tags[]" type="checkbox" value="{{$tag->id}}">{{ $tag->name }}</input>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary">
                                         Update article

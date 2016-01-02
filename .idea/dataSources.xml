@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="2839564607">
-    <data-source source="LOCAL" name="MySQL - blog@localhost" uuid="debc22dd-c739-4917-98bf-720f158ba2fe">
+  <component name="DataSourceManagerImpl" format="xml" hash="1635129978">
+    <data-source source="LOCAL" name="MySQL - laravelstart@localhost" uuid="cda7006c-6082-45e6-ad9a-54024a4601bc">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/blog</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/laravelstart</jdbc-url>
       <driver-properties>
         <property name="zeroDateTimeBehavior" value="convertToNull" />
         <property name="tinyInt1isBit" value="false" />

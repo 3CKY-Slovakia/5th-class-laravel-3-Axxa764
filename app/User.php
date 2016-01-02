@@ -51,4 +51,13 @@ class User extends Model implements AuthenticatableContract,
     public function isOwner($articleID){
         return !empty(Auth::user()->articles()->find($articleID));
     }
+
+    public function numberOfArticles(){
+        return (Auth::user()->articles()->count());
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
 }

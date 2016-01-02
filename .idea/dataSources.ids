@@ -1,35 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="MySQL - blog@localhost" uuid="debc22dd-c739-4917-98bf-720f158ba2fe">
+  <data-source name="MySQL - laravelstart@localhost" uuid="cda7006c-6082-45e6-ad9a-54024a4601bc">
     <database-info product="MySQL" version="5.6.17" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
       <extra-name-characters>#@</extra-name-characters>
       <identifier-quote-string>`</identifier-quote-string>
     </database-info>
     <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
-    <schema name="" catalog="blog"/>
-    <table name="articles" schema="" catalog="blog" type="TABLE">
+    <schema name="" catalog="laravelstart"/>
+    <table name="article_tag" schema="" catalog="laravelstart" type="TABLE">
+      <column name="article_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="tag_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+    </table>
+    <table name="articles" schema="" catalog="laravelstart" type="TABLE">
       <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="user_id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="title" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="video" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="content" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="deleted_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="articles_user_id_foreign" columns="user_id" ref-table="users" ref-schema="" ref-catalog="blog" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <foreign-key name="articles_user_id_foreign" columns="user_id" ref-table="users" ref-schema="" ref-catalog="laravelstart" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <exported-key name="comments_article_id_foreign" table="comments" schema="" catalog="laravelstart" columns="article_id"/>
       <index name="articles_user_id_index" unique="false" columns="user_id"/>
     </table>
-    <table name="migrations" schema="" catalog="blog" type="TABLE">
+    <table name="comments" schema="" catalog="laravelstart" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="article_id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="message" sqlType="LONGTEXT" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="deleted_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="comments_article_id_foreign" columns="article_id" ref-table="articles" ref-schema="" ref-catalog="laravelstart" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <index name="comments_article_id_index" unique="false" columns="article_id"/>
+    </table>
+    <table name="migrations" schema="" catalog="laravelstart" type="TABLE">
       <column name="migration" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="batch" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
     </table>
-    <table name="password_resets" schema="" catalog="blog" type="TABLE">
+    <table name="password_resets" schema="" catalog="laravelstart" type="TABLE">
       <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="token" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <index name="password_resets_email_index" unique="false" columns="email"/>
       <index name="password_resets_token_index" unique="false" columns="token"/>
     </table>
-    <table name="users" schema="" catalog="blog" type="TABLE">
+    <table name="tags" schema="" catalog="laravelstart" type="TABLE">
+      <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
+      <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="users" schema="" catalog="laravelstart" type="TABLE">
       <column name="id" sqlType="INT UNSIGNED" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
       <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12"/>
@@ -38,7 +66,7 @@
       <column name="created_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <column name="updated_at" sqlType="TIMESTAMP" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <exported-key name="articles_user_id_foreign" table="articles" schema="" catalog="blog" columns="user_id"/>
+      <exported-key name="articles_user_id_foreign" table="articles" schema="" catalog="laravelstart" columns="user_id"/>
       <index name="users_email_unique" unique="true" columns="email"/>
     </table>
   </data-source>

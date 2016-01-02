@@ -66,7 +66,22 @@ Route::group(['prefix' => 'article'], function () {
     Route::get('show/{id}', 'ArticlesController@show');
     Route::get('create', 'ArticlesController@create');
     Route::get('edit/{id}', 'ArticlesController@edit');
+    Route::get('delete/{id}', 'ArticlesController@delete');
 
     Route::post('store', 'ArticlesController@store');
     Route::post('update/{id}', 'ArticlesController@update');
 });
+
+Route::group(['prefix' => 'comment'], function () {
+    Route::post('store', 'CommentsController@store');
+});
+
+/**
+ * BLOGGERS
+ */
+Route::group(['prefix' => 'users'], function () {
+    Route::get('/', 'UsersController@index');
+});
+
+// Contact
+Route::post('contact', 'ContactController@sendContactInfo');
