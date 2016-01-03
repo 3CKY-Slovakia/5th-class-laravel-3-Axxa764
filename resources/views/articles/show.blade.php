@@ -107,22 +107,7 @@
                                                 <span class="light mini-text ml-15">{{$comment->created_at}}</span>
                                             </h4>
                                             {{$comment->message}}
-                                            <!--
-                                            <p class="votes t-right helvetica mt-20">
 
-                                                <a href="#" class="like">
-                                                    <i class="fa fa-thumbs-o-up"></i>
-                                                    <span>+0</span>
-                                                </a>
-                                                <a href="#" class="unlike">
-                                                    <i class="fa fa-thumbs-o-down"></i>
-                                                    <span>-0</span>
-                                                </a>
-                                                <a href="#" class="reply">
-                                                    <i class="fa fa-reply"></i>
-                                                    <span>Reply</span>
-                                                </a>
-                                            </p>-->
                                     </div>
 
                                 </div>

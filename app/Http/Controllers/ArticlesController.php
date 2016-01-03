@@ -10,6 +10,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use PhpParser\Node\Expr\Cast\Array_;
 
 class ArticlesController extends Controller
 {
@@ -19,9 +21,9 @@ class ArticlesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth', ['except' => ['index', 'show']]);
-        $this->middleware('articleOwner:', ['except' => ['index', 'show', 'create', 'store', 'edit', 'delete', 'update']]);
-        $this->middleware('numberOfArticles:', ['except' => ['index', 'show', 'edit', 'delete', 'update']]);
+        $this->middleware('auth', ['except' => ['index', 'show','filtrate','showFiltered','filter']]);
+        $this->middleware('articleOwner:', ['except' => ['index', 'show', 'create', 'store', 'edit', 'delete', 'update','filtrate','filter','showFiltered']]);
+        $this->middleware('numberOfArticles:', ['except' => ['index', 'show', 'edit', 'delete', 'update','filtrate','filter','showFiltered']]);
     }
 
     /**
@@ -37,6 +39,63 @@ class ArticlesController extends Controller
             'articles' => $articles
         ]);
 
+    }
+
+    public function filtrate()
+    {
+        $tags = Tag::all();
+        return view('articles.filter', [
+            'tags' => $tags
+        ]);
+    }
+
+
+    public function filter(Request $request)
+    {
+
+        $data = $request->all();
+
+        $allArticles = Article::all();
+        $title = $data['title'];
+        $content = $data['content'];
+        $description = $data['description'];
+        //dd($content);
+
+        $articles1=array();
+        $articles2=array();
+        $articles3=array();
+
+        foreach ($allArticles as $article){
+            if ($article->title == $title) {
+                $articles1[]=$article;
+            }
+            if ($article->description == $description) {
+                $articles2[]=$article;
+            }
+            if (strpos($article->content,$content) !== false){
+                $articles3[]=$article;
+            }
+        }
+
+        if(empty($title)) {
+            foreach ($allArticles as $a){
+                $articles1[]=$a;
+            }
+        }
+        if(empty($description)) {
+            foreach ($allArticles as $a){
+                $articles2[]=$a;
+            }
+        }
+        if(empty($content)) {
+            foreach ($allArticles as $a){
+                $articles3[]=$a;
+            }
+        }
+
+        $articles=array_intersect($articles1,$articles2,$articles3);
+
+        return view('articles.index',['articles' => $articles]);
     }
 
     /**

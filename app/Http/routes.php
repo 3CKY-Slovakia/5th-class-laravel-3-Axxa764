@@ -65,6 +65,8 @@ Route::group(['prefix' => 'article'], function () {
     Route::get('/', 'ArticlesController@index');
     Route::get('show/{id}', 'ArticlesController@show');
     Route::get('create', 'ArticlesController@create');
+    Route::get('filtrate', 'ArticlesController@filtrate');
+    Route::post('filter', 'ArticlesController@filter');
     Route::get('edit/{id}', 'ArticlesController@edit');
     Route::get('delete/{id}', 'ArticlesController@delete');
 

@@ -33,6 +33,10 @@
                     </li>
 
                     <li>
+                        <a href="{{ url('article/filtrate') }}">Filter</a>
+                    </li>
+
+                    <li>
                         <a href="{{ url('article/create') }}"><i class="fa fa-plus"></i> Article</a>
                     </li>
 
